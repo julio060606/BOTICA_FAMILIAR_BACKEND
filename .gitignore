@@ -9,7 +9,7 @@ __pycache__/
 *$py.class
 
 # Variables de entorno (Secretos)
-.env
+#.env
 
 # IDEs
 .idea/
