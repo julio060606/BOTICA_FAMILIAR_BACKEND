@@ -9,6 +9,8 @@ from routes.inventario_routes import inventario_bp
 from routes.compras_routes import compras_bp
 from routes.kardex_routes import kardex_bp
 from routes.notificacion_routes import notificacion_bp
+from routes.ventas_routs import ventas_bp 
+
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +24,7 @@ def create_app():
     app.register_blueprint(compras_bp, url_prefix='/api/compras')
     app.register_blueprint(kardex_bp, url_prefix='/api/kardex')
     app.register_blueprint(notificacion_bp, url_prefix='/api/notificaciones')
+     app.register_blueprint(ventas_bp, url_prefix='/api/ventas')  
 
     # Ruta de bienvenida para saber que el motor está encendido
     @app.route('/')
