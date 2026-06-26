@@ -1,5 +1,6 @@
 from flask import Blueprint
 from controllers.compras_controller import ComprasController
+from utils.auth import token_requerido  # <-- Traemos a nuestro guardia
 
 compras_bp = Blueprint('compras', __name__)
 

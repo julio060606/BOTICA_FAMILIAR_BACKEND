@@ -1,5 +1,6 @@
 from flask import Blueprint
 from controllers.inventario_controller import InventarioController
+from utils.auth import token_requerido  # <-- Traemos a nuestro guardia
 
 inventario_bp = Blueprint('inventario', __name__)
 
