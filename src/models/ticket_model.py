@@ -10,9 +10,10 @@ class TicketVentaModel:
 
     @staticmethod
     def obtener_historial(limit=50):
-        """Obtiene historial de ventas ordenado por fecha"""
+        """Obtiene historial de ventas incluyendo el nombre del usuario que vendió"""
+        # 🔥 OPTIMIZACIÓN: Cambiamos "*" por un Join Relacional para traer el nombre del cajero
         respuesta = supabase.table('ventas') \
-            .select("*") \
+            .select("*, usuarios(nombres)") \
             .order('fecha_hora', desc=True) \
             .limit(limit) \
             .execute()
@@ -24,6 +25,16 @@ class TicketVentaModel:
         respuesta = supabase.table('ventas') \
             .select("*") \
             .eq('id', ticket_id) \
+            .execute()
+        return respuesta.data
+
+    # 🔥 NUEVO MÉTODO: Lo necesita tu compañera para pintar los artículos en el modal del voucher
+    @staticmethod
+    def obtener_detalle_productos(ticket_id):
+        """Obtiene los artículos vendidos en el ticket junto con el nombre del producto"""
+        respuesta = supabase.table('ventas_detalle') \
+            .select("*, productos(nombre)") \
+            .eq('id_venta', ticket_id) \
             .execute()
         return respuesta.data
 
