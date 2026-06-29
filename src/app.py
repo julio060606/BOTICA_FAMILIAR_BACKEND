@@ -11,6 +11,7 @@ from routes.notificacion_routes import notificacion_bp
 from routes.ticket_routes import ticket_bp
 from routes.auth_routes import auth_bp
 from routes.venta_routes import ventas_bp
+from routes.caja_routes import caja_bp
 
 def create_app():
     app = Flask(__name__)
@@ -26,6 +27,7 @@ def create_app():
     app.register_blueprint(ticket_bp, url_prefix='/api/tickets')
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(ventas_bp, url_prefix='/api/ventas')  # ← Nueva línea
+    app.register_blueprint(caja_bp, url_prefix='/api/caja')  # ← Nueva línea
     
     
     # Ruta de bienvenida para saber que el motor está encendido

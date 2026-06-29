@@ -30,14 +30,17 @@ class VentaModel:
             # Calcular subtotal
             subtotal = float(datos['total']) - float(datos['igv'])
 
-            # Insertar la venta con el ID REAL del token
+            # === INSERTAR LA VENTA (AHORA CON ID TURNO Y VUELTO) ===
             venta = {
                 "nro_ticket": nuevo_ticket,
-                "id_usuario": id_usuario_real, # <-- AQUÍ ESTÁ LA SEGURIDAD
+                "id_usuario": id_usuario_real,
+                "id_turno": datos.get('id_turno'),  # 🔥 LA CONEXIÓN CON LA GAVETA FÍSICA
                 "subtotal": subtotal,
                 "igv": float(datos['igv']),
                 "total": float(datos['total']),
                 "medio_pago": datos['medio_pago'],
+                "monto_entregado": datos.get('monto_entregado', 0.0), # 🔥 EL DINERO FÍSICO QUE DIO EL CLIENTE
+                "vuelto": datos.get('vuelto', 0.0),                   # 🔥 EL CAMBIO QUE LE DIMOS
                 "estado": "VALIDO"
             }
 
@@ -69,7 +72,7 @@ class VentaModel:
                     "referencia": nuevo_ticket,
                     "cantidad": -int(item['cantidad']),
                     "saldo_final": stock_nuevo if prod.data else 0,
-                    "id_usuario": id_usuario_real # <-- AQUÍ ESTÁ LA SEGURIDAD
+                    "id_usuario": id_usuario_real
                 }
                 supabase.table('kardex').insert(kardex).execute()
 

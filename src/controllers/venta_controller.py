@@ -14,18 +14,20 @@ class VentasController:
             try:
                 datos_limpios = VentaSchema(**datos_crudos)
             except ValidationError as error:
-                return jsonify({
-                    "success": False, 
-                    "message": "Error de validación en los datos enviados", 
-                    "data": error.errors()
-                }), 400
+                return jsonify({"success": False, "message": "Datos inválidos", "data": error.errors()}), 400
 
-            # 2. Seguridad Zero Trust: Sacamos el ID del token verificado
-            # (Recordemos que request.usuario_actual lo inyecta nuestro utils/auth.py)
+            # 2. Seguridad Zero Trust (Sacamos ID de Usuario y ID de Caja)
             id_usuario_real = request.usuario_actual['id']
+            
+            # 🔥 ATRAPAMOS EL TURNO QUE NOS PASÓ EL GUARDIA
+            id_turno_real = getattr(request, 'id_turno_actual', None)
 
-            # 3. Enviamos los datos limpios (.model_dump() o .dict()) al modelo
-            resultado = VentaModel.registrar_venta(datos_limpios.model_dump(), id_usuario_real)
+            # 3. Preparamos el paquete inyectando el id_turno
+            datos_para_guardar = datos_limpios.model_dump()
+            datos_para_guardar['id_turno'] = id_turno_real
+
+            # 4. Lo enviamos al modelo
+            resultado = VentaModel.registrar_venta(datos_para_guardar, id_usuario_real)
 
             if resultado.get("success"):
                 return jsonify(resultado), 201
@@ -33,8 +35,4 @@ class VentasController:
                 return jsonify(resultado), 400
 
         except Exception as e:
-            return jsonify({
-                "success": False, 
-                "message": "Error interno del servidor", 
-                "data": str(e)
-            }), 500
+            return jsonify({"success": False, "message": "Error interno", "data": str(e)}), 500
