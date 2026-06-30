@@ -24,7 +24,7 @@ def create_app():
     app.register_blueprint(compras_bp, url_prefix='/api/compras')
     app.register_blueprint(kardex_bp, url_prefix='/api/kardex')
     app.register_blueprint(notificacion_bp, url_prefix='/api/notificaciones')
-    app.register_blueprint(ticket_bp, url_prefix='/api/tickets')
+    app.register_blueprint(ticket_bp, url_prefix='/api/ticket')
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(ventas_bp, url_prefix='/api/ventas')  # ← Nueva línea
     app.register_blueprint(caja_bp, url_prefix='/api/caja')  # ← Nueva línea
