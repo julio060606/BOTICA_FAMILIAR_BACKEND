@@ -35,4 +35,4 @@ class VentasController:
                 return jsonify(resultado), 400
 
         except Exception as e:
-            return jsonify({"success": False, "message": "Error interno", "data": str(e)}), 500
+            return jsonify({"success": False, "message": "Stock insuficiente", "data": str("stock_insuficiente")}), 400
